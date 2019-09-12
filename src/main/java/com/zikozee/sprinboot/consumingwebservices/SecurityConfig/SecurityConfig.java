@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         // add our users for in memory authentication
-
+        //***************** note we can use .authorities for .roles
         auth.inMemoryAuthentication()
                 .withUser("margaret").password(passwordEncoder().encode("test123")).roles("USER")
                 .and()
@@ -29,19 +29,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("ziko").password(passwordEncoder().encode("test123")).roles("USER", "ADMIN");
 
-
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
+        //******************* we can use hasAuthority for hasRole and hasAnyAuthority for hasAnyROle
         // secures all REST endpoints under "/users" using roles
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/users").hasRole("USER")
                 .antMatchers(HttpMethod.GET,"/users/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST,"/users").hasAnyRole("MANAGER", "ADMIN")
                 .antMatchers(HttpMethod.POST,"/users/**").hasAnyRole("MANAGER", "ADMIN")
-                .antMatchers(HttpMethod.PUT,"/users/**").hasAnyRole("MANAGER", "ADMIN")
+                .antMatchers(HttpMethod.PUT,"/users").hasAnyRole("MANAGER", "ADMIN")
                 .antMatchers(HttpMethod.PUT,"/users/**").hasAnyRole("MANAGER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE,"/users/**").hasRole("ADMIN")
                 .and()
