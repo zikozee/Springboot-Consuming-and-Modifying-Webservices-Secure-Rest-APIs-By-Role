@@ -1,3 +1,4 @@
+[![CircleCI](https://circleci.com/gh/zikozee/Springboot-Consuming-and-Modifying-Webservices-Secure-Rest-APIs-By-Role/tree/master.svg?style=svg)]
 # Springboot-Consuming-and-Modifying-Webservices-Secure-Rest-APIs-By-Role
 
 1. USER role can perform following
