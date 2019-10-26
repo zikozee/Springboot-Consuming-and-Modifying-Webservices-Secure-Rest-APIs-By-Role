@@ -3,8 +3,7 @@ package com.zikozee.sprinboot.consumingwebservices.Service;
 import com.zikozee.sprinboot.consumingwebservices.Entity.Address;
 import com.zikozee.sprinboot.consumingwebservices.Entity.User;
 import com.zikozee.sprinboot.consumingwebservices.Entity.UserList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,10 +14,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService{
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
     private RestTemplate restTemplate;
 
 //    //Field Injection
@@ -29,12 +28,12 @@ public class UserServiceImpl implements UserService{
     public UserServiceImpl(RestTemplate myRestTemplate, @Value("${crm.rest.url}")String crmRestUrl){
         restTemplate = myRestTemplate;
         url= crmRestUrl;
-        LOGGER.info("loaded property: crm.rest,url=" + crmRestUrl);
+        log.info("loaded property: crm.rest,url=" + crmRestUrl);
     }
 
     @Override
     public List<User> getUserList(){
-        LOGGER.info("in userList: Calling REST API " + url);
+        log.info("in userList: Calling REST API " + url);
 
         //make REST call
         ResponseEntity<List<User>> responseEntity =
@@ -43,7 +42,7 @@ public class UserServiceImpl implements UserService{
 
         // get the list  of users from response
         List<User> users = responseEntity.getBody();
-        LOGGER.info("in userList: users " + users);
+        log.info("in userList: users " + users);
         return users;
     }
 
@@ -59,44 +58,44 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUser(int id) {
-        LOGGER.info("in getUser: Calling REST API " + url);
+        log.info("in getUser: Calling REST API " + url);
 
         //make REST call
         User user = restTemplate.
                 getForObject(url + "/" + id, User.class);
 
-        LOGGER.info("in getUser: users" + user);
+        log.info("in getUser: users" + user);
         return user;
     }
 
     @Override
     public List<Address> getAddressList() {
-        LOGGER.info("in getAddressList: Calling REST API " + url);
+        log.info("in getAddressList: Calling REST API " + url);
         List<Address> addresses = new ArrayList<>();
         
         for(User user : getUserList()){
             addresses.add(user.getAddress());
         }
-        LOGGER.info("in getAddressList: addresses" + addresses);
+        log.info("in getAddressList: addresses" + addresses);
         return addresses;
     }
 
     @Override
     public Address getUserAddress(int userId) {
-        LOGGER.info("in getUserAddress: Calling REST API " + url);
+        log.info("in getUserAddress: Calling REST API " + url);
         Address myAddress = null;
         for(User user : getUserList()){
             if(user.getId() == userId){
                 myAddress=  getUserList().get(userId).getAddress();
             }
         }
-        LOGGER.info("in getUserAddress: myAddress " + myAddress);
+        log.info("in getUserAddress: myAddress " + myAddress);
         return myAddress;
     }
 
     @Override
     public void saveUser(User user) {
-        LOGGER.info("in saveUser: Calling REST API " + url);
+        log.info("in saveUser: Calling REST API " + url);
 
         int userId = user.getId();
 
@@ -108,15 +107,15 @@ public class UserServiceImpl implements UserService{
             //update user
             restTemplate.put(url, user);
         }
-        LOGGER.info("in saveUser(): success");
+        log.info("in saveUser(): success");
     }
 
     @Override
     public void deleteUser(int userId) {
-        LOGGER.info("in deleteUser: Calling REST API " + url);
+        log.info("in deleteUser: Calling REST API " + url);
         //make REST call
         restTemplate.delete(url + "/" + userId);
-        LOGGER.info("in deleteUser(): deleted customer userId = " + userId);
+        log.info("in deleteUser(): deleted customer userId = " + userId);
     }
 
 //    @Override
