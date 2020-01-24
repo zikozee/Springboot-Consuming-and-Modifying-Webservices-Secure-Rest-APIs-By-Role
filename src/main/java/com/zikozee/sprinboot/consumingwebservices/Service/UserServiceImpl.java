@@ -4,7 +4,6 @@ import com.zikozee.sprinboot.consumingwebservices.Entity.Address;
 import com.zikozee.sprinboot.consumingwebservices.Entity.User;
 import com.zikozee.sprinboot.consumingwebservices.Entity.UserList;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -24,7 +23,7 @@ public class UserServiceImpl implements UserService{
 //    @Value("${crm.rest.url}")
     private String url;
 
-    @Autowired //we used constructor injection
+    //@Autowired //we used constructor injection
     public UserServiceImpl(RestTemplate myRestTemplate, @Value("${crm.rest.url}")String crmRestUrl){
         restTemplate = myRestTemplate;
         url= crmRestUrl;
